@@ -105,11 +105,6 @@ public class image_result_list extends AppCompatActivity {
         String bing_search_key =(String)bundle.get("keyword");
         BingSearchTask temp_object = new BingSearchTask(this,bing_search_key,urls_string,shop_urls);
         temp_object.execute();
-        Log.v("please give urls",urls_string[0]);
-        Log.v("please give urls",urls_string[1]);
-        Log.v("please give urls",urls_string[2]);
-        Log.v("please give urls",urls_string[3]);
-        Log.v("please give urls",urls_string[4]);
     }
 
 
