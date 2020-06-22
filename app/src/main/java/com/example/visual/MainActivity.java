@@ -1,5 +1,6 @@
 package com.example.visual;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     //buttons on the xml layout
     private ImageButton visual_search;
     private EditText keywords;
+    private ImageButton keywordsearch;
 
     //permission codes for access.
     public static final int ask_permission=1;
@@ -60,7 +62,16 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, ask_permission);
         }
-
+        keywords =(EditText)findViewById(R.id.keyword);
+        keywordsearch = (ImageButton)findViewById(R.id.search);
+        keywordsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent search_from_keyword = new Intent(v.getContext(),image_result_list.class);
+                search_from_keyword.putExtra("keyword",keywords.getText().toString());
+                startActivity(search_from_keyword);
+            }
+        });
         visual_search=(ImageButton)findViewById(R.id.camera);
         visual_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,14 +90,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.v("Main activity","Inside on request permissions result");
-        switch (requestCode) {
-            case ask_permission: {
-                Toast info = Toast.makeText(getApplicationContext(),"This feature needs permission to camera, read, write.Please allow and try again :)",Toast.LENGTH_LONG);
-                info.show();
-                System.exit(0);
-            }
+        if (requestCode == ask_permission) {
+            Toast info = Toast.makeText(getApplicationContext(), "This feature needs permission to camera, read, write.Please allow and try again :)", Toast.LENGTH_LONG);
+            info.show();
+            System.exit(0);
         }
     }
     @Override
@@ -94,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.v("Main activity","Inside on activity result");
         if(requestCode == ask_image && resultCode == RESULT_OK) {
-            Log.v("Mai n activity","Inside got image from camera");
+            Log.v("Main activity","Inside got image from camera");
             performCrop(PictureUri);
         }
         if (requestCode == pic_crop) {

@@ -11,8 +11,17 @@
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:hint=" Search product..."
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:background="@color/LightSteelBlue"/>
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toLeftOf="@+id/camera"
+        android:id="@+id/search"
+        android:src="@drawable/search"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="4dp"
+        android:layout_toStartOf="@+id/camera" />
 
     <ImageButton
         android:layout_width="45dp"
@@ -23,5 +32,6 @@
         android:id="@+id/camera"
         android:src="@drawable/camera"
         android:scaleType="fitCenter"
-        android:background="@color/PowderBlue"/>
+        android:background="@color/PowderBlue"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

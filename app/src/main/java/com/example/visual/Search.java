@@ -9,10 +9,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +35,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.BingImageSearchAPI;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.BingImageSearchManager;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.models.ImageObject;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.models.ImagesModel;
+
+import okhttp3.Callback;
 
 public class Search extends AppCompatActivity {
     // presets for rgb conversion
@@ -55,12 +63,13 @@ public class Search extends AppCompatActivity {
     private String[] high_prob_keys = null;
     private String[] high_probs = null;
 
+    private LinearLayout ranks;
     private ImageView selected_image;
     private Button search_button;
     private Button back_button;
-    private TextView key1_text;
-    private TextView key2_text;
-    private TextView key3_text;
+    private Button key1_text;
+    private Button key2_text;
+    private Button key3_text;
 
     private TextView prob1_text;
     private TextView prob2_text;
@@ -98,16 +107,40 @@ public class Search extends AppCompatActivity {
         setContentView(R.layout.search);
         Log.v("Search","Search Content set");
 
+        ranks = (LinearLayout)findViewById(R.id.labels);
+        key1_text = (Button)findViewById(R.id.key1);
+        key1_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i1 = new Intent(v.getContext(),image_result_list.class);
+                i1.putExtra("keyword",key1_text.getText().toString());
+                startActivity(i1);
+            }
+        });
+        key2_text = (Button)findViewById(R.id.key2);
+        key2_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i2 = new Intent(v.getContext(),image_result_list.class);
+                i2.putExtra("keyword",key2_text.getText().toString());
+                startActivity(i2);
+            }
+        });
+        key3_text = (Button)findViewById(R.id.key3);
+        key3_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i3 = new Intent(v.getContext(),image_result_list.class);
+                i3.putExtra("keyword",key3_text.getText().toString());
+                startActivity(i3);
+            }
+        });
 
-        key1_text = (TextView)findViewById(R.id.key1);
-        key2_text = (TextView)findViewById(R.id.key2);
-        key3_text = (TextView)findViewById(R.id.key3);
+        prob1_text = findViewById(R.id.prob1);
+        prob2_text = findViewById(R.id.prob2);
+        prob3_text = findViewById(R.id.prob3);
 
-        prob1_text = (TextView)findViewById(R.id.prob1);
-        prob2_text = (TextView)findViewById(R.id.prob2);
-        prob3_text = (TextView)findViewById(R.id.prob3);
-
-        final ImageView selected_image = (ImageView)findViewById(R.id.selected_image);
+        final ImageView selected_image = findViewById(R.id.selected_image);
         //Uri recieved_uri = (Uri)getIntent().getParcelableExtra("resID_uri");
 
         byte[] byteArray = getIntent().getByteArrayExtra("image");
@@ -115,20 +148,20 @@ public class Search extends AppCompatActivity {
         //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), recieved_uri);
         selected_image.setImageBitmap(bmp);
 
-        search_button = (Button)findViewById(R.id.search_image);
+        search_button = findViewById(R.id.search_image);
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ranks.setVisibility(View.VISIBLE);
                 Bitmap org_bitmap = ((BitmapDrawable)selected_image.getDrawable()).getBitmap();
                 Bitmap sized_bitmap = Resize_bitmap(org_bitmap,DIM_IMG_SIZE_X,DIM_IMG_SIZE_Y);
                 Bitmap_to_Buffer(sized_bitmap,Pic_data);
                 tensorflowlite.run(Pic_data,keys_prob_array);
                 show_high_prob_keys();
-
             }
         });
 
-        back_button = (Button)findViewById(R.id.back_button);
+        back_button = findViewById(R.id.back_button);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,6 +172,8 @@ public class Search extends AppCompatActivity {
 
         high_prob_keys = new String[RESULTS_TO_SHOW];
         high_probs = new String[RESULTS_TO_SHOW];
+
+
     }
 
 
@@ -150,7 +185,6 @@ public class Search extends AppCompatActivity {
         long declaredLength = fileDescriptor.getDeclaredLength();
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
-
 
     private List<String> load_keys() throws IOException {
         List<String> labelList = new ArrayList<String>();
@@ -196,6 +230,7 @@ public class Search extends AppCompatActivity {
             }
         }
     }
+
     private void show_high_prob_keys() {// add all results to priority queue
         for (int i = 0; i < keys_list.size(); ++i) {
             keys_inorder.add(new AbstractMap.SimpleEntry<>(keys_list.get(i), keys_prob_array[0][i]));
@@ -220,5 +255,7 @@ public class Search extends AppCompatActivity {
         prob2_text.setText(high_probs[1]);
         prob3_text.setText(high_probs[0]);
     }
+
+
 
 }

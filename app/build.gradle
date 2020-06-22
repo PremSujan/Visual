@@ -10,6 +10,15 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
     }
     buildTypes {
         release {
@@ -30,8 +39,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation 'com.android.support:support-compat:25.0.0'
     //tensorflow dependency
     implementation 'org.tensorflow:tensorflow-lite:+'
-
+    implementation 'com.google.cloud:google-cloud-storage:1.37.1'
+    //bing image search api dependency
+    implementation 'com.microsoft.azure.cognitiveservices:azure-cognitiveservices-imagesearch:1.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
 }

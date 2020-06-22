@@ -17,7 +17,7 @@
         android:layout_below="@id/selected_image"
         app:srcCompat="@android:color/background_light" />
     <LinearLayout
-        android:layout_width="370dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
@@ -44,10 +44,11 @@
         android:layout_below="@+id/menu_bar"
         android:layout_gravity="center"
         android:layout_marginBottom="44dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
-            android:layout_width="370dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
@@ -66,24 +67,26 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="Confidence"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="370dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
+            <Button
                 android:id="@+id/key1"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:text="1."
-                android:textSize="14sp" />
+                android:textAlignment="viewStart"
+                android:textSize="14sp"
+                android:gravity="start" />
 
             <TextView
                 android:id="@+id/prob1"
@@ -95,18 +98,20 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="370dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
+            <Button
                 android:id="@+id/key2"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:text="2."
-                android:textSize="14sp" />
+                android:textAlignment="viewStart"
+                android:textSize="14sp"
+                android:gravity="start" />
 
             <TextView
                 android:id="@+id/prob2"
@@ -118,18 +123,20 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="370dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
+            <Button
                 android:id="@+id/key3"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:text="3."
-                android:textSize="14sp" />
+                android:textAlignment="viewStart"
+                android:textSize="14sp"
+                android:gravity="start" />
 
             <TextView
                 android:id="@+id/prob3"
